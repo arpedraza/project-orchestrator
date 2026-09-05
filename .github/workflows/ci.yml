@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  scanner-registry:
+  scanner-registry-state:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,5 +17,7 @@ jobs:
           python-version: '3.12'
       - name: Compile Python utilities
         run: python -m compileall -q scripts tests
-      - name: Run scanner and registry regression tests
+      - name: Validate JSON schema documents
+        run: python -m json.tool schemas/project-state.schema.json >/dev/null && python -m json.tool schemas/work-item.schema.json >/dev/null && python -m json.tool schemas/dependency.schema.json >/dev/null && python -m json.tool schemas/gate.schema.json >/dev/null && python -m json.tool schemas/state-bundle.schema.json >/dev/null
+      - name: Run scanner, registry, and state regression tests
         run: python -m unittest discover -s tests -v

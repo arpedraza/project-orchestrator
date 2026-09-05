@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "dependency.schema.json",
+  "title": "Project Orchestrator v2 Dependency",
+  "$defs": {
+    "reference": {"type": "object", "required": ["kind", "id"], "additionalProperties": false, "properties": {"kind": {"enum": ["work", "gate", "decision", "artifact", "environment", "external", "capability"]}, "id": {"type": "string", "minLength": 1}}},
+    "duration": {"type": "object", "required": ["value", "unit"], "additionalProperties": false, "properties": {"value": {"type": "number", "minimum": 0}, "unit": {"enum": ["minutes", "hours", "days"]}}}
+  },
+  "type": "object",
+  "required": ["id", "predecessor", "successor", "status"],
+  "additionalProperties": true,
+  "properties": {
+    "id": {"type": "string", "minLength": 1}, "predecessor": {"$ref": "#/$defs/reference"}, "successor": {"$ref": "#/$defs/reference"},
+    "relationship": {"enum": ["FS", "SS", "FF", "SF"], "default": "FS"}, "strength": {"enum": ["HARD", "SOFT"], "default": "HARD"},
+    "lag": {"$ref": "#/$defs/duration"}, "satisfaction_condition": {"type": ["string", "null"]},
+    "status": {"enum": ["SATISFIED", "UNSATISFIED", "AT_RISK", "BROKEN", "WAIVED"]}, "decision_ref": {"type": ["string", "null"], "minLength": 1}
+  }
+}
