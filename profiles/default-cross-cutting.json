@@ -1,0 +1,11 @@
+{
+  "profile_id": "default-cross-cutting",
+  "description": "Provider-neutral default trigger hints. Project policy may override or disable any rule.",
+  "disciplines": {
+    "security": {"enabled": true, "minimum_materiality": "MEDIUM", "modes": ["BASELINE", "EVENT_TRIGGERED", "MANDATORY_GATE", "OPERATIONAL"], "tags": ["identity", "authentication", "authorization", "permission", "secret", "sensitive-data", "public-integration", "vulnerability", "compliance"]},
+    "infrastructure": {"enabled": true, "minimum_materiality": "MEDIUM", "modes": ["BASELINE", "EVENT_TRIGGERED", "MANDATORY_GATE", "OPERATIONAL"], "tags": ["topology", "network", "storage", "capacity", "resilience", "environment", "infrastructure"]},
+    "cost": {"enabled": true, "minimum_materiality": "MEDIUM", "modes": ["BASELINE", "EVENT_TRIGGERED", "MANDATORY_GATE", "OPERATIONAL"], "tags": ["cost", "budget", "capacity", "region", "storage", "network", "paid-service", "usage"]},
+    "ai": {"enabled": true, "requires_project_flag": "ai", "minimum_materiality": "MEDIUM", "modes": ["BASELINE", "EVENT_TRIGGERED", "MANDATORY_GATE", "OPERATIONAL"], "tags": ["model", "prompt", "agent", "tool-access", "retrieval", "training-data", "ai-safety", "ai-quality", "ai-cost"]},
+    "observability": {"enabled": true, "minimum_materiality": "LOW", "modes": ["BASELINE", "EVENT_TRIGGERED", "MANDATORY_GATE", "OPERATIONAL"], "tags": ["telemetry", "logging", "metrics", "traces", "alerts", "slo", "incident", "runtime"]}
+  }
+}
