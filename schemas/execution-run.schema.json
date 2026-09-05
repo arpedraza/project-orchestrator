@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project-orchestrator.local/schemas/execution-run.schema.json",
+  "title": "Project Orchestrator Execution Run",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "kind",
+    "run_id",
+    "project_id",
+    "executor",
+    "objective",
+    "mutation_boundary",
+    "status",
+    "started_at",
+    "starting_state"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "kind": {"const": "execution-run"},
+    "run_id": {"type": "string", "minLength": 1},
+    "project_id": {"type": "string", "minLength": 1},
+    "executor": {
+      "type": "object",
+      "required": ["id", "type"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "type": {"enum": ["human", "agent", "automation", "external"]}
+      },
+      "additionalProperties": false
+    },
+    "objective": {"type": "string", "minLength": 1},
+    "work_item_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "authority_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "mutation_boundary": {
+      "type": "object",
+      "required": ["modify", "new", "delete", "protected"],
+      "properties": {
+        "modify": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "new": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "delete": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "protected": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      },
+      "additionalProperties": false
+    },
+    "status": {"enum": ["IN_PROGRESS", "COMPLETED", "FAILED", "CANCELLED"]},
+    "classification": {
+      "type": ["string", "null"],
+      "enum": [null, "PASS", "FAIL_PRE_EXECUTION", "FAIL_PRE_WRITE", "FAIL_POST_WRITE", "FAIL_ROLLBACK_PASS", "RECOVERED_VALIDATED", "CANCELLED"]
+    },
+    "cause": {"type": ["string", "null"]},
+    "started_at": {"type": "string"},
+    "ended_at": {"type": ["string", "null"]},
+    "starting_state": {"type": "object"},
+    "ending_state": {"type": "object"},
+    "events": {"type": "array", "items": {"type": "object"}},
+    "outputs": {"type": "array", "items": {"type": "string"}},
+    "files_affected": {"type": "array", "items": {"type": "string"}},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "issue_refs": {"type": "array", "items": {"type": "string"}},
+    "decision_refs": {"type": "array", "items": {"type": "string"}},
+    "summary": {"type": ["string", "null"]}
+  },
+  "additionalProperties": true
+}
