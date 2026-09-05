@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "promotion.schema.json",
+  "title": "Project Orchestrator v2 Promotion",
+  "type": "object",
+  "required": ["id", "artifact_id", "source_environment", "target_environment", "status", "path_type"],
+  "additionalProperties": true,
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "release_ref": {"type": ["string", "null"], "minLength": 1},
+    "artifact_id": {"type": "string", "minLength": 1},
+    "source_environment": {"type": "string", "minLength": 1},
+    "target_environment": {"type": "string", "minLength": 1},
+    "status": {"enum": ["PROPOSED", "READY", "IN_PROGRESS", "SUCCEEDED", "FAILED", "ROLLED_BACK", "CANCELLED"]},
+    "path_type": {"enum": ["NORMAL", "HOTFIX", "EMERGENCY"]},
+    "policy_ref": {"type": ["string", "null"], "minLength": 1},
+    "required_gates": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "deployment_evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "validation_evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "rollback_work_ref": {"type": ["string", "null"], "minLength": 1},
+    "executor": {"type": ["object", "null"]}
+  }
+}
