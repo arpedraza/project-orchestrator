@@ -1,25 +1,11 @@
-# Project Orchestrator v2 — Catalog
+# Project Orchestrator v2 Catalogs
 
-> **Status:** Structural placeholder approved by CHG-001. Existing `role-mapping.md` remains the active v1 routing source.
+> **Status:** CHG-002 active bootstrap data for the scanner/capability-registry subsystem.
 
-## Purpose
+The catalog is descriptive bootstrap knowledge, never runtime task-routing authority.
 
-This directory will hold bootstrap/reference metadata used by the v2 capability registry. Catalog data is never runtime truth by itself.
+- `roles.json` preserves the v1 role definitions and keyword hints for compatibility/classification.
+- `capabilities.json` defines normalized capability identifiers, aliases, role hints, and deterministic inference terms.
+- `known-specialists.json` preserves the v1 known-skill catalog as bootstrap role/capability hints.
 
-## Planned separation
-
-Future catalog content is expected to distinguish:
-
-- **roles** — broad descriptive organizational functions;
-- **capability taxonomy** — stable normalized capability identifiers and aliases;
-- **known specialist mappings** — bootstrap hints about commonly known skills/specialists and likely capabilities.
-
-## Rules
-
-- Roles remain descriptive; capabilities drive task matching.
-- Static known-specialist entries are hints and must be validated against the current installation/runtime.
-- Capability declarations/inference retain provenance and confidence where applicable.
-- Catalog metadata cannot grant authority, production permission, trust, or task eligibility.
-- A missing catalog entry never prevents dynamic discovery/classification of a newly installed specialist.
-
-Migration of the useful role definitions and known-skill knowledge from `../role-mapping.md` is deferred to CHG-002.
+Declared specialist metadata takes precedence over catalog hints. Catalog-derived roles/capabilities are marked as inferred/bootstrap provenance in registry output. Task-time eligibility, trust, authority, health validation, and executor ranking remain outside CHG-002.

@@ -1,5 +1,11 @@
 # Role Mapping — Skill-to-Role Assignment Rules
 
+> **V1 compatibility routing — CHG-002 notice**
+>
+> This file remains active only because the current `SKILL.md` still uses v1 role/primary-skill routing.
+> Project Orchestrator v2 scanner/registry code uses `catalog/roles.json`, `catalog/capabilities.json`, and `catalog/known-specialists.json` as bootstrap classification data instead.
+> The catalog is not task-routing authority; retirement of this compatibility file is deferred until the main orchestrator migration.
+
 ## Contents
 - Role definitions
 - Explicit role declaration (SKILL.md frontmatter)
