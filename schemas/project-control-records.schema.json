@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "project-control-records.schema.json",
+  "title": "Project Orchestrator v2 Project-Control Records",
+  "$defs": {
+    "requirement": {"type":"object","required":["id","status"],"additionalProperties":true,"properties":{"id":{"type":"string","minLength":1},"status":{"enum":["PROPOSED","ANALYZED","APPROVED","IMPLEMENTED","VERIFIED","ACCEPTED","DEFERRED","REJECTED","SUPERSEDED","CANCELLED"]},"owner":{"type":["string","null"]}}},
+    "decision": {"type":"object","required":["id","status"],"additionalProperties":true,"properties":{"id":{"type":"string","minLength":1},"status":{"enum":["OPEN","DEFERRED","DECIDED","SUPERSEDED","CANCELLED"]},"authority_ref":{"type":["string","null"]}}},
+    "raid": {"type":"object","required":["id","kind","status"],"additionalProperties":true,"properties":{"id":{"type":"string","minLength":1},"kind":{"enum":["risk","assumption","issue"]},"status":{"type":"string","minLength":1},"owner":{"type":["string","null"]}}},
+    "change": {"type":"object","required":["id","status"],"additionalProperties":true,"properties":{"id":{"type":"string","minLength":1},"status":{"enum":["PROPOSED","ASSESSING","APPROVED","REJECTED","IMPLEMENTED","CLOSED"]},"material":{"type":"boolean"},"decision_ref":{"type":["string","null"]}}},
+    "evidence": {"type":"object","required":["id","type"],"additionalProperties":true,"properties":{"id":{"type":"string","minLength":1},"type":{"type":"string","minLength":1},"artifact_ref":{"type":["string","null"]},"environment_ref":{"type":["string","null"]}}},
+    "release": {"type":"object","required":["id","status"],"additionalProperties":true,"properties":{"id":{"type":"string","minLength":1},"status":{"enum":["PLANNED","ASSEMBLING","CANDIDATE","VALIDATING","APPROVED","RELEASED","REJECTED","ROLLED_BACK","SUPERSEDED","CANCELLED"]},"evidence_refs":{"type":"array","items":{"type":"string","minLength":1}}}},
+    "deployment": {"type":"object","required":["id","status"],"additionalProperties":true,"properties":{"id":{"type":"string","minLength":1},"status":{"enum":["PLANNED","READY","IN_PROGRESS","SUCCEEDED","FAILED","ROLLED_BACK","CANCELLED"]},"release_ref":{"type":["string","null"]},"environment_ref":{"type":["string","null"]},"validation_evidence_refs":{"type":"array","items":{"type":"string","minLength":1}}}},
+    "traceLink": {"type":"object","required":["source_ref","target_ref","relationship"],"additionalProperties":false,"properties":{"source_ref":{"type":"string","minLength":1},"target_ref":{"type":"string","minLength":1},"relationship":{"enum":["implements","implemented_by","verifies","verified_by","evidences","depends_on","blocks","mitigates","caused_by","addresses","supersedes","derived_from","affects","introduced_by","released_in","deployed_as","accepted_by","waived_by"]}}}
+  }
+}
