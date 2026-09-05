@@ -1,0 +1,15 @@
+{
+  "policy_id": "default-project-policy",
+  "description": "Conservative provider-neutral authority defaults for Project Orchestrator v2.",
+  "allowed_health": ["AVAILABLE", "DEGRADED"],
+  "unknown_trust_max_action_class": "A1",
+  "production_approval": "HUMAN",
+  "auto_install_trust": ["SYSTEM", "ORGANIZATION_APPROVED", "TRUSTED_CATALOG"],
+  "action_classes": {
+    "A0": "observation/read-only",
+    "A1": "local reversible change",
+    "A2": "external reversible change",
+    "A3": "trust/security boundary change",
+    "A4": "production/high-impact/irreversible change"
+  }
+}
