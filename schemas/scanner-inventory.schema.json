@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/project-orchestrator/scanner-inventory.schema.json",
+  "title": "Project Orchestrator Scanner Inventory",
+  "type": "object",
+  "required": ["schema_version", "provider", "scanned_root", "package_boundary", "packages", "summary"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "provider": {"type": "string"},
+    "scanned_root": {"type": "string"},
+    "generated_at": {"type": "string"},
+    "package_boundary": {"type": "string"},
+    "packages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["provider", "package_path", "directory_name", "manifest_path", "declared", "metadata_status", "runtime_status", "warnings", "errors"],
+        "properties": {
+          "provider": {"type": "string"},
+          "package_path": {"type": "string"},
+          "directory_name": {"type": "string"},
+          "manifest_path": {"type": "string"},
+          "declared": {
+            "type": "object",
+            "required": ["name", "description", "roles", "capabilities"],
+            "properties": {
+              "name": {"type": ["string", "null"]},
+              "description": {"type": "string"},
+              "roles": {"type": "array", "items": {"type": "string"}},
+              "capabilities": {"type": "array", "items": {"type": "string"}},
+              "runtime_requirements": {"type": "array", "items": {"type": "string"}},
+              "supported_platforms": {"type": "array", "items": {"type": "string"}},
+              "supported_environments": {"type": "array", "items": {"type": "string"}}
+            }
+          },
+          "instruction_excerpt": {"type": "string"},
+          "metadata_status": {"enum": ["valid", "warning", "invalid"]},
+          "runtime_status": {"enum": ["NOT_EVALUATED", "AVAILABLE", "DEGRADED", "UNAVAILABLE"]},
+          "warnings": {"type": "array", "items": {"type": "string"}},
+          "errors": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["skills_found", "valid", "warnings", "invalid", "skipped_directories"]
+    }
+  }
+}
