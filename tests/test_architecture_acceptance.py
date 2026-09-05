@@ -35,7 +35,8 @@ class ArchitectureAcceptanceTests(unittest.TestCase):
         required=[
           "operating-model.md","project-state.md","capabilities-executors.md","scheduling-gates.md",
           "lifecycle-environments.md","recovery-change-control.md","project-control-traceability.md",
-          "documentation-model.md","discovery-registry.md","policy-authority.md","validation-rules.md"
+          "documentation-model.md","discovery-registry.md","policy-authority.md","execution-continuity.md",
+          "validation-rules.md"
         ]
         for name in required:
             self.assertTrue((ROOT/"references"/name).is_file(),name)
@@ -46,6 +47,27 @@ class ArchitectureAcceptanceTests(unittest.TestCase):
         self.assertIn("PROJECT_ROOT",text)
         self.assertIn("state_recommendations",text)
         self.assertIn("human by default",text)
+
+    def test_executor_continuity_is_runtime_not_parallel_truth(self):
+        skill=(ROOT/"SKILL.md").read_text(encoding="utf-8")
+        reference=(ROOT/"references/execution-continuity.md").read_text(encoding="utf-8")
+        self.assertIn("Project state is more important than conversation/session state",skill)
+        self.assertIn("non-authoritative runtime artifacts",skill)
+        self.assertIn("Mutation scope and authority are separate concepts",reference)
+        self.assertIn("Canonical project truth remains under `docs/`",reference)
+        self.assertTrue((ROOT/"schemas/execution-run.schema.json").is_file())
+        self.assertTrue((ROOT/"schemas/executor-checkpoint.schema.json").is_file())
+
+    def test_chatgpt_project_bootstrap_and_windows_harness_exist(self):
+        self.assertTrue((ROOT/"orchestrator.ps1").is_file())
+        for name in ("PROJECT-INSTRUCTIONS.md","README.md","TEST-PROMPT.md"):
+            self.assertTrue((ROOT/"chatgpt"/name).is_file(),name)
+        instructions=(ROOT/"chatgpt/PROJECT-INSTRUCTIONS.md").read_text(encoding="utf-8")
+        self.assertIn("chat/project memory",instructions.lower())
+        self.assertIn("do not claim",instructions.lower())
+        readme=(ROOT/"README.md").read_text(encoding="utf-8")
+        self.assertIn("Windows PowerShell local harness",readme)
+        self.assertIn("Codex installation not required",readme)
 
     def test_permanent_v1_baseline_is_documented(self):
         for path in (ROOT/"README.md",ROOT/"phases.md",ROOT/"role-mapping.md"):

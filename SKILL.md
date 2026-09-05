@@ -300,18 +300,53 @@ A decision package should include context, options, impacts, specialist position
 
 When the user personally performs a task, continue unrelated project work where possible and validate their result using the same evidence/gate contract.
 
-## Checkpoint and resume
+## Executor continuity, checkpoint and resume
 
-Runtime checkpoints may be stored under `.orchestrator/checkpoints/`. Canonical state remains in `docs/`; a checkpoint is not project truth.
+Project state is more important than conversation/session state. ChatGPT chats, Codex sessions, humans, and automations are replaceable executors; the project must remain resumable without hidden conversation memory.
+
+Runtime continuity lives under:
+
+```text
+.orchestrator/runs/<RUN-ID>/run.json
+.orchestrator/checkpoints/<CHK-ID>.json
+.orchestrator/checkpoints/<CHK-ID>.md
+.orchestrator/checkpoints/latest.json
+.orchestrator/checkpoints/latest.md
+```
+
+These are **non-authoritative runtime artifacts**. Canonical state remains in `docs/`. Material facts discovered during a run must be promoted to canonical records before being treated as project truth.
+
+When terminal helpers are available, record bounded executor sessions with:
+
+```bash
+python3 scripts/executor_continuity.py --root <project-root> run-start ...
+python3 scripts/executor_continuity.py --root <project-root> run-event ...   # optional meaningful events
+python3 scripts/executor_continuity.py --root <project-root> run-end ...
+python3 scripts/executor_continuity.py --root <project-root> checkpoint ...
+```
+
+A run may declare `MODIFY`, `NEW`, `DELETE`, and `PROTECTED` scope. That mutation boundary describes intended scope; **it does not itself grant authority or imply a universal human approval gate**. Apply normal project policy and delegated authority.
+
+Use execution-stage classifications such as `PASS`, `FAIL_PRE_EXECUTION`, `FAIL_PRE_WRITE`, `FAIL_POST_WRITE`, `FAIL_ROLLBACK_PASS`, `RECOVERED_VALIDATED`, and `CANCELLED` in addition to the normal root-cause recovery classification.
+
+Before a meaningful executor/context switch:
+
+1. promote material decisions/results/risks/evidence into canonical records;
+2. close or update the current execution run where appropriate;
+3. refresh `.orchestrator/checkpoints/latest.*` or emit equivalent checkpoint content when direct filesystem access is unavailable;
+4. include next eligible work, capability/authority blocks, open decisions/RAID, and the next exact action.
 
 On resume:
 
-1. rescan/sync significant state changes;
-2. refresh capability registry when stale or inventory changed;
-3. validate canonical project state;
-4. recalculate readiness/schedule;
-5. continue autonomous work inside policy;
-6. surface only outstanding material attention/decisions.
+1. establish and validate `project_id` first; checkpoint identity mismatch is a hard stop;
+2. compare the checkpoint canonical-state digest with current canonical state;
+3. if the digest changed, re-sync/recalculate rather than trusting the checkpoint as current truth;
+4. refresh capability registry when stale or inventory changed;
+5. validate canonical project state and recalculate readiness/schedule;
+6. continue autonomous work inside policy;
+7. surface only outstanding material attention/decisions.
+
+Raw run output is not automatically accepted evidence. Hashes/digests support drift/integrity comparison; they do not establish trust or correctness.
 
 ## Completion
 
@@ -333,6 +368,7 @@ Use these for detailed semantics and invariants:
 - `references/documentation-model.md`
 - `references/discovery-registry.md`
 - `references/policy-authority.md`
+- `references/execution-continuity.md`
 - `references/validation-rules.md`
 
 Executable helpers live under `scripts/`; machine contracts under `schemas/`; bootstrap classification hints under `catalog/`; configurable defaults under `profiles/`.
