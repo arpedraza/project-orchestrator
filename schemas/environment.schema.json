@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "environment.schema.json",
+  "title": "Project Orchestrator v2 Environment",
+  "type": "object",
+  "required": ["id", "name", "class", "purpose", "state"],
+  "additionalProperties": true,
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "name": {"type": "string", "minLength": 1},
+    "class": {"type": "string", "minLength": 1},
+    "purpose": {"type": "string", "minLength": 1},
+    "state": {"enum": ["PROPOSED", "PROVISIONING", "READY", "DEGRADED", "UNAVAILABLE", "RETIRED"]},
+    "promotion_to": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "required_gates": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "required_capabilities": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "allowed_data_classifications": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "deployment_policy_ref": {"type": ["string", "null"], "minLength": 1}
+  }
+}
