@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "state-bundle.schema.json",
   "title": "Project Orchestrator v2 State Bundle",
-  "description": "Machine/runtime projection for cross-record validation. It is not the durable canonical project knowledge base.",
+  "description": "Machine/runtime projection for cross-record validation and planning. It is not the durable canonical project knowledge base.",
   "type": "object",
   "required": ["schema_version", "project", "work_items", "dependencies", "gates"],
   "additionalProperties": true,
@@ -11,6 +11,10 @@
     "project": {"$ref": "project-state.schema.json"},
     "work_items": {"type": "array", "items": {"$ref": "work-item.schema.json"}},
     "dependencies": {"type": "array", "items": {"$ref": "dependency.schema.json"}},
-    "gates": {"type": "array", "items": {"$ref": "gate.schema.json"}}
+    "gates": {"type": "array", "items": {"$ref": "gate.schema.json"}},
+    "environments": {"type": "array", "items": {"$ref": "environment.schema.json"}},
+    "promotions": {"type": "array", "items": {"$ref": "promotion.schema.json"}},
+    "milestones": {"type": "array", "items": {"$ref": "milestone.schema.json"}},
+    "events": {"type": "array", "items": {"$ref": "cross-cutting-event.schema.json"}}
   }
 }
