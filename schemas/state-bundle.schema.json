@@ -15,6 +15,14 @@
     "environments": {"type": "array", "items": {"$ref": "environment.schema.json"}},
     "promotions": {"type": "array", "items": {"$ref": "promotion.schema.json"}},
     "milestones": {"type": "array", "items": {"$ref": "milestone.schema.json"}},
-    "events": {"type": "array", "items": {"$ref": "cross-cutting-event.schema.json"}}
+    "events": {"type": "array", "items": {"$ref": "cross-cutting-event.schema.json"}},
+    "requirements": {"type": "array", "items": {"$ref": "project-control-records.schema.json#/$defs/requirement"}},
+    "decisions": {"type": "array", "items": {"$ref": "project-control-records.schema.json#/$defs/decision"}},
+    "raid": {"type": "array", "items": {"$ref": "project-control-records.schema.json#/$defs/raid"}},
+    "changes": {"type": "array", "items": {"$ref": "project-control-records.schema.json#/$defs/change"}},
+    "evidence": {"type": "array", "items": {"$ref": "project-control-records.schema.json#/$defs/evidence"}},
+    "releases": {"type": "array", "items": {"$ref": "project-control-records.schema.json#/$defs/release"}},
+    "deployments": {"type": "array", "items": {"$ref": "project-control-records.schema.json#/$defs/deployment"}},
+    "trace_links": {"type": "array", "items": {"$ref": "project-control-records.schema.json#/$defs/traceLink"}}
   }
 }
