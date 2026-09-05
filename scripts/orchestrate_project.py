@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 from markdown_records import sync_state, RecordError
-from orchestration_engine import orchestration_snapshot
+from control_loop import run_iteration
 
 
 def _load(path:Path)->dict:
@@ -34,7 +34,7 @@ def main()->int:
         registry=_load(registry_path)
         policy_path=Path(args.policy) if args.policy else source_root/"profiles/default-policy.json"
         policy=_load(policy_path)
-        result=orchestration_snapshot(bundle,registry,policy)
+        result=run_iteration(bundle,registry,policy)
         target=Path(args.output) if args.output else root/".orchestrator/state/orchestration.json"
         target.parent.mkdir(parents=True,exist_ok=True); target.write_text(json.dumps(result,indent=2,sort_keys=True)+"\n",encoding="utf-8")
         print(json.dumps(result,indent=2,sort_keys=True))
