@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project-orchestrator.local/schemas/executor-checkpoint.schema.json",
+  "title": "Project Orchestrator Executor Checkpoint",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "kind",
+    "checkpoint_id",
+    "generated_at",
+    "project",
+    "canonical_state_digest",
+    "executor",
+    "work",
+    "orchestration",
+    "git",
+    "next_actions"
+  ],
+  "properties": {
+    "schema_version": {"type": "string"},
+    "kind": {"const": "executor-checkpoint"},
+    "checkpoint_id": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string"},
+    "project": {
+      "type": "object",
+      "required": ["project_id"],
+      "properties": {
+        "project_id": {"type": "string", "minLength": 1},
+        "name": {"type": ["string", "null"]},
+        "status": {"type": ["string", "null"]},
+        "reporting_stage": {"type": ["string", "null"]},
+        "active_baseline_ref": {"type": ["string", "null"]},
+        "active_release_refs": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "canonical_state_digest": {"type": "string", "pattern": "^[A-F0-9]{64}$"},
+    "executor": {
+      "type": "object",
+      "required": ["id", "type"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "type": {"enum": ["human", "agent", "automation", "external"]}
+      },
+      "additionalProperties": false
+    },
+    "objective": {"type": ["string", "null"]},
+    "work": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {"type": "string"},
+        "uniqueItems": true
+      }
+    },
+    "open_decisions": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "open_raid": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "orchestration": {"type": "object"},
+    "latest_run": {"type": ["object", "null"]},
+    "git": {"type": "object"},
+    "next_actions": {"type": "array", "items": {"type": "string"}}
+  },
+  "additionalProperties": true
+}
