@@ -139,7 +139,7 @@ try {
             Write-Host ''
             Write-Host "[PASS] PowerShell $($PSVersionTable.PSVersion)"
             Write-Host "[PASS] Orchestrator home: $OrchestratorHome"
-            $Version = Invoke-OrchestratorPythonCapture @('-c', 'import sys; print(".".join(map(str, sys.version_info[:3])))'.Replace('\"','"'))
+            $Version = Invoke-OrchestratorPythonCapture @('-c', 'import sys; print(".".join(map(str, sys.version_info[:3])))')
             Write-Host "[PASS] Python $Version via $($script:Python.Display)"
             foreach ($Relative in @(
                 'scripts\project_docs.py',
