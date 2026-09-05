@@ -139,7 +139,7 @@ try {
             Write-Host ''
             Write-Host "[PASS] PowerShell $($PSVersionTable.PSVersion)"
             Write-Host "[PASS] Orchestrator home: $OrchestratorHome"
-            $Version = Invoke-OrchestratorPythonCapture @('-c', 'import sys; print(".".join(map(str,sys.version_info[:3])))')
+            $Version = Invoke-OrchestratorPythonCapture @('-c', 'import sys; print(".".join(map(str, sys.version_info[:3])))'.Replace('\"','"'))
             Write-Host "[PASS] Python $Version via $($script:Python.Display)"
             foreach ($Relative in @(
                 'scripts\project_docs.py',
@@ -257,7 +257,7 @@ try {
 
         'checkpoint' {
             Require-ProjectRoot
-            $Args = [System.Collections.Generic.List[string]]::new()
+            $Args = New-Object 'System.Collections.Generic.List[string]'
             foreach ($Item in @(
                 (Join-Path $OrchestratorHome 'scripts\executor_continuity.py'),
                 '--root', $script:ProjectRoot,
@@ -293,7 +293,7 @@ try {
         'run-start' {
             Require-ProjectRoot
             Require-Value $Objective 'Objective'
-            $Args = [System.Collections.Generic.List[string]]::new()
+            $Args = New-Object 'System.Collections.Generic.List[string]'
             foreach ($Item in @(
                 (Join-Path $OrchestratorHome 'scripts\executor_continuity.py'),
                 '--root', $script:ProjectRoot,
@@ -316,7 +316,7 @@ try {
             Require-ProjectRoot
             Require-Value $RunId 'RunId'
             Require-Value $Message 'Message'
-            $Args = [System.Collections.Generic.List[string]]::new()
+            $Args = New-Object 'System.Collections.Generic.List[string]'
             foreach ($Item in @(
                 (Join-Path $OrchestratorHome 'scripts\executor_continuity.py'),
                 '--root', $script:ProjectRoot,
@@ -335,7 +335,7 @@ try {
             Require-Value $RunId 'RunId'
             Require-Value $Classification 'Classification'
             Require-Value $Summary 'Summary'
-            $Args = [System.Collections.Generic.List[string]]::new()
+            $Args = New-Object 'System.Collections.Generic.List[string]'
             foreach ($Item in @(
                 (Join-Path $OrchestratorHome 'scripts\executor_continuity.py'),
                 '--root', $script:ProjectRoot,
@@ -359,7 +359,7 @@ try {
                 '--executor-type', $ExecutorType,
                 '--objective', "Resume after $RunId"
             )
-            Write-Host "[PASS] Terminal run recorded and checkpoint refreshed."
+            Write-Host '[PASS] Terminal run recorded and checkpoint refreshed.'
             break
         }
     }
