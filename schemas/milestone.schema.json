@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "milestone.schema.json",
+  "title": "Project Orchestrator v2 Milestone",
+  "type": "object",
+  "required": ["id", "name"],
+  "additionalProperties": true,
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "name": {"type": "string", "minLength": 1},
+    "baseline": {"type": ["string", "null"], "format": "date-time"},
+    "forecast": {"type": ["string", "null"], "format": "date-time"},
+    "required_work_refs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "required_gate_refs": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  }
+}

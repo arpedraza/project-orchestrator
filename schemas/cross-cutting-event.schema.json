@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cross-cutting-event.schema.json",
+  "title": "Project Orchestrator v2 Cross-Cutting Event",
+  "type": "object",
+  "required": ["id", "kind", "materiality", "mode", "tags"],
+  "additionalProperties": true,
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "kind": {"type": "string", "minLength": 1},
+    "materiality": {"enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]},
+    "mode": {"enum": ["BASELINE", "EVENT_TRIGGERED", "MANDATORY_GATE", "OPERATIONAL"]},
+    "tags": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  }
+}
