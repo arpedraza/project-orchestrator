@@ -18,6 +18,42 @@ jobs:
       - name: Compile Python utilities
         run: python -m compileall -q scripts tests
       - name: Validate JSON schema documents
-        run: python -m json.tool schemas/project-state.schema.json >/dev/null && python -m json.tool schemas/work-item.schema.json >/dev/null && python -m json.tool schemas/dependency.schema.json >/dev/null && python -m json.tool schemas/gate.schema.json >/dev/null && python -m json.tool schemas/state-bundle.schema.json >/dev/null
-      - name: Run scanner, registry, and state regression tests
+        run: |
+          python -m json.tool schemas/project-state.schema.json >/dev/null
+          python -m json.tool schemas/work-item.schema.json >/dev/null
+          python -m json.tool schemas/dependency.schema.json >/dev/null
+          python -m json.tool schemas/gate.schema.json >/dev/null
+          python -m json.tool schemas/state-bundle.schema.json >/dev/null
+          python -m json.tool schemas/execution-run.schema.json >/dev/null
+          python -m json.tool schemas/executor-checkpoint.schema.json >/dev/null
+      - name: Run cumulative regression and end-to-end tests
         run: python -m unittest discover -s tests -v
+
+  windows-powershell:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Parse Windows PowerShell harness
+        shell: powershell
+        run: |
+          $Tokens = $null
+          $Errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path .\orchestrator.ps1),
+            [ref]$Tokens,
+            [ref]$Errors
+          ) | Out-Null
+          if ($Errors.Count -gt 0) {
+            $Errors | ForEach-Object { Write-Error $_.Message }
+            exit 1
+          }
+          Write-Host "PowerShell parse: PASS"
+      - name: Run local doctor through Windows PowerShell
+        shell: powershell
+        run: '& .\orchestrator.ps1 doctor'
+      - name: Run disposable MVP smoke test through Windows PowerShell
+        shell: powershell
+        run: '& .\orchestrator.ps1 smoke-test'
