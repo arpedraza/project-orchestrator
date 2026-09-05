@@ -1,7 +1,7 @@
 # Project Orchestrator v2 — Validation Rules & System Invariants
 
-> **Status:** Approved target design — not active runtime behavior.
-> **Current runtime authority:** These invariants are specifications only until corresponding validators/runtime subsystems are implemented.
+> **Status:** Incrementally active. CHG-002 discovery/registry rules and CHG-003 project-state/dependency/gate rules are implemented; later lifecycle, scheduling, policy, traceability, and documentation rules remain target design.
+> **Current runtime authority:** The v1 `SKILL.md` orchestration loop remains active until its later migration. Implemented validators enforce only the subsystems explicitly activated below.
 
 ## Design provenance
 
@@ -157,12 +157,26 @@ The redesigned generic core is not complete if any of these remain true without 
 
 ## CHG-001 validation boundary
 
-For CHG-001 itself, validation is documentary/structural only. No v2 runtime rule above is expected to execute yet. The key checks are:
+For CHG-001 itself, validation was documentary/structural only. The key checks were baseline recoverability, unchanged v1 runtime files, clear v2 source ownership, and scenario manifests.
 
-1. the v1 baseline is recoverable;
-2. existing runtime files are unchanged;
-3. approved v2 design areas have clear source ownership;
-4. v1 and v2 authority status is unmistakable;
-5. schema/catalog/profile implementation remains deferred;
-6. acceptance/scanner regression manifests exist;
-7. new documentation links/references are internally coherent.
+## CHG-002 active validation boundary
+
+CHG-002 activates discovery/registry invariants covering deterministic local skill discovery, declared/inferred provenance, capability/health separation, bootstrap catalogs, multiple-provider registry ingestion, and non-inference of trust/task eligibility. It does not activate task routing, authority, installation, or the main orchestration loop.
+
+## CHG-003 active validation boundary
+
+CHG-003 activates the following state-engine rules in `scripts/state_model.py` / `scripts/validate_state.py`:
+
+- globally unique stable IDs within the State Bundle;
+- local work/dependency/gate reference integrity;
+- HARD dependency cycle rejection;
+- `READY` rejection for `UNSATISFIED` or `BROKEN` HARD dependencies;
+- `AT_RISK` does not automatically make a dependency unsatisfied;
+- dependency and gate waivers require decision references;
+- `DONE` requires all required acceptance criteria to be `SATISFIED`;
+- `DONE` requires each required gate to be currently `PASSED`/`VALID` or validly `WAIVED`;
+- `PASSED` gates require non-empty evaluated scope, supporting evidence, `VALID` validity, and satisfied required criteria;
+- human, agent, automation, and external assignments share one Work Item contract;
+- baseline, forecast, and actual schedule fields remain separately represented.
+
+CHG-003 does **not** yet activate dispatch, resource/capacity rules, critical-path scheduling, automatic gate invalidation from changes, authority verification of decision references, environment promotion, or the v2 `SKILL.md` orchestration loop. The JSON State Bundle is a runtime projection/cache and must not replace the Markdown-first canonical project knowledge base.
