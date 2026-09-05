@@ -206,9 +206,74 @@ The MVP end-to-end tests cover:
 4. missing capability → BLOCKED recommendation rather than silent continuation;
 5. production work without approval → NEEDS_DECISION and no dispatch.
 
+## Windows PowerShell local harness
+
+`orchestrator.ps1` provides a Windows-first façade over the same tested Python engine. It installs no PowerShell modules, Node packages, Docker images, or other tooling.
+
+The current engine **does require an existing Python 3.10+ runtime**. The harness will detect `py -3`, `python`, or `python3` and will fail clearly if none is already available; it does not install Python automatically.
+
+Start with:
+
+```powershell
+.\orchestrator.ps1 doctor
+.\orchestrator.ps1 smoke-test
+```
+
+`smoke-test` runs entirely in a unique temporary directory. It performs no Git, cloud, pipeline, or real-project writes.
+
+Common commands:
+
+```powershell
+.\orchestrator.ps1 init -ProjectRoot C:\Projects\MyPilot -ProjectId PRJ-001 -Name "My Pilot" -Objective "Validate Orchestrator"
+.\orchestrator.ps1 scan -ProjectRoot C:\Projects\MyPilot -SkillsRoot C:\Path\To\Skills
+.\orchestrator.ps1 sync -ProjectRoot C:\Projects\MyPilot
+.\orchestrator.ps1 plan -ProjectRoot C:\Projects\MyPilot
+.\orchestrator.ps1 status -ProjectRoot C:\Projects\MyPilot
+.\orchestrator.ps1 checkpoint -ProjectRoot C:\Projects\MyPilot -ExecutorId chatgpt -ExecutorType agent
+.\orchestrator.ps1 resume -ProjectRoot C:\Projects\MyPilot
+```
+
+The wrapper also exposes `run-start`, `run-event`, and `run-end` for executor/session history and mutation-boundary tracking.
+
+## Executor continuity across ChatGPT, Codex, humans, and automation
+
+Project state is more important than conversation state.
+
+CHG-009 continuity artifacts live only under the runtime workspace:
+
+```text
+.orchestrator/runs/<RUN-ID>/run.json
+.orchestrator/checkpoints/<CHK-ID>.json
+.orchestrator/checkpoints/<CHK-ID>.md
+.orchestrator/checkpoints/latest.json
+.orchestrator/checkpoints/latest.md
+```
+
+Run records capture executor identity, objective, mutation/protected scope, events, execution-stage result classification, raw outputs, evidence/issue/decision references, and state digests. Checkpoints provide a compact resume snapshot for the next executor.
+
+They are **not** a parallel project record. Material decisions, requirements, accepted risks, completed work, and evidence remain canonical under `docs/`.
+
+See `references/execution-continuity.md`.
+
+## ChatGPT Project mode — Codex installation not required
+
+Project Orchestrator can be tested as a governing operating model inside a ChatGPT Project without first installing it as a Codex skill.
+
+Use:
+
+- `chatgpt/PROJECT-INSTRUCTIONS.md` as the ChatGPT Project-specific bootstrap instructions;
+- `chatgpt/README.md` for setup and cross-chat/Codex handoff guidance;
+- `chatgpt/TEST-PROMPT.md` for a disposable first pilot.
+
+In this mode, ChatGPT should use canonical project files/checkpoints as project state, not rely on hidden chat memory. If the environment does not actually expose a local repository or terminal, it must hand exact execution work to a human/Codex/other executor rather than pretending it executed it.
+
+Codex is therefore one possible executor/integration, not a prerequisite for the Project Orchestrator control model.
+
 ## Source map
 
 - `SKILL.md` — active v2 conductor/runtime instructions
+- `orchestrator.ps1` — Windows-first local façade and smoke-test entry point
+- `chatgpt/` — ChatGPT Project bootstrap/test material
 - `references/` — detailed approved operating semantics
 - `scripts/` — executable deterministic helpers/control plane
 - `schemas/` — machine interface contracts
