@@ -1,11 +1,11 @@
 # Project Orchestrator v2 — Scanner Regression Scenario Manifest
 
-> **Status:** Approved CHG-001 validation contract — documented only; automation is deferred to CHG-002.
-> **Current scanner:** `scripts/scan-skills.sh` remains unchanged during CHG-001.
+> **Status:** CHG-002 executable regression contract.
+> **Current scanner:** `scripts/scan-skills.sh` is the compatibility entry point for the Python scanner implementation.
 
 ## Purpose
 
-Define the scanner/discovery behaviors that must be covered when the existing Bash scanner is hardened and the capability registry is introduced.
+Define the scanner/discovery behaviors covered while the existing Bash scanner is hardened and the capability registry is introduced.
 
 ## R01 — Simple frontmatter
 
@@ -53,7 +53,7 @@ Define the scanner/discovery behaviors that must be covered when the existing Ba
 
 **Given:** Nested directories contain additional `SKILL.md` files beneath a direct child package.
 
-**Expected:** Discovery follows the explicitly chosen package-boundary rule. Recommended default: only direct child skill packages are enumerated unless a provider explicitly supports namespaced/recursive packages.
+**Expected:** Discovery follows the explicitly chosen package-boundary rule: only direct child skill packages are enumerated unless a future provider explicitly supports namespaced/recursive packages.
 
 ## R09 — Accurate result count
 
@@ -63,7 +63,7 @@ Define the scanner/discovery behaviors that must be covered when the existing Ba
 
 ## R10 — Machine-readable output validity
 
-**Given:** The scanner is invoked in its future machine-readable mode.
+**Given:** The scanner is invoked in machine-readable mode.
 
 **Expected:** Output is syntactically valid, deterministic enough for registry ingestion, and contains raw inventory/metadata status without requiring the registry to parse a Markdown table.
 
@@ -77,13 +77,13 @@ Define the scanner/discovery behaviors that must be covered when the existing Ba
 
 **Given:** Existing callers execute `bash scripts/scan-skills.sh`.
 
-**Expected:** The shell entry point remains usable even if richer YAML parsing/validation is delegated to another implementation utility.
+**Expected:** The shell entry point remains usable while richer parsing/validation is delegated to the Python implementation utility.
 
 ## R13 — Health/runtime separation
 
 **Given:** A skill declares a valid capability but a required runtime/tool/connection is absent.
 
-**Expected:** The capability remains part of the specialist profile while current health/eligibility becomes unavailable/degraded. Discovery does not erase capability because runtime is temporarily missing.
+**Expected:** The capability remains part of the specialist profile while current health becomes unavailable/degraded. Discovery does not erase capability because runtime is temporarily missing. Task-time eligibility is still not evaluated in CHG-002.
 
 ## R14 — Metadata/instruction conflict
 
@@ -91,6 +91,11 @@ Define the scanner/discovery behaviors that must be covered when the existing Ba
 
 **Expected:** Validation produces a conflict finding; frontmatter is not blindly trusted as the final capability/side-effect profile.
 
-## Automation boundary
+## Automation mapping
 
-CHG-001 documents these cases only. CHG-002 should translate the applicable scenarios into repeatable scanner/registry tests before replacing v1 discovery behavior.
+| Scenario | Automated coverage |
+|---|---|
+| R01–R12 | `tests/test_scan_skills.py` |
+| R13–R14 | `tests/test_registry.py` |
+
+The suite uses standard-library `unittest` and temporary filesystem fixtures. CI runs the suite on every push and pull request. Task routing, trust decisions, autonomous installation, and task-time runtime checks remain outside CHG-002.
