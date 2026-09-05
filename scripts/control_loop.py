@@ -5,7 +5,6 @@ from copy import deepcopy
 from typing import Any
 
 from orchestration_engine import orchestration_snapshot
-from lifecycle_engine import environment_ready_for if False else None
 
 
 def _work_index(bundle): return {w.get("id"):w for w in bundle.get("work_items",[]) or [] if isinstance(w,dict)}
