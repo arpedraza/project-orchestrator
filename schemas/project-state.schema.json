@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "project-state.schema.json",
+  "title": "Project Orchestrator v2 Project State",
+  "type": "object",
+  "required": ["project_id", "name", "objective", "status", "reporting_stage"],
+  "additionalProperties": true,
+  "properties": {
+    "project_id": {"type": "string", "minLength": 1},
+    "name": {"type": "string", "minLength": 1},
+    "objective": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "minLength": 1},
+    "reporting_stage": {"type": "string", "minLength": 1},
+    "active_baseline_ref": {"type": ["string", "null"], "minLength": 1},
+    "policy_refs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "environment_refs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "active_release_refs": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "register_refs": {"type": "object", "additionalProperties": {"type": "string", "minLength": 1}}
+  }
+}

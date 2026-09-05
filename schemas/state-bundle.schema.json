@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "state-bundle.schema.json",
+  "title": "Project Orchestrator v2 State Bundle",
+  "description": "Machine/runtime projection for cross-record validation. It is not the durable canonical project knowledge base.",
+  "type": "object",
+  "required": ["schema_version", "project", "work_items", "dependencies", "gates"],
+  "additionalProperties": true,
+  "properties": {
+    "schema_version": {"type": "string", "minLength": 1},
+    "project": {"$ref": "project-state.schema.json"},
+    "work_items": {"type": "array", "items": {"$ref": "work-item.schema.json"}},
+    "dependencies": {"type": "array", "items": {"$ref": "dependency.schema.json"}},
+    "gates": {"type": "array", "items": {"$ref": "gate.schema.json"}}
+  }
+}
